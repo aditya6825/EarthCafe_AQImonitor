@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earth Café Air Quality</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+    background: #f5f3ee;
+    transition: background 1s ease;
+}
+
+/* 🌈 Dynamic ambient background */
+.bg {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    transition: 1s ease;
+}
+
+/* Premium glass card */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(25px);
+    border-radius: 28px;
+    padding: 45px;
+    width: 90%;
+    max-width: 420px;
+
+    border: 1px solid rgba(255,255,255,0.4);
+
+    box-shadow: 
+        0 25px 60px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+    text-align: center;
+}
+
+/* Logo */
+.logo {
+    width: 90px;
+    margin-bottom: 10px;
+    opacity: 0.95;
+}
+
+/* AQI */
+.aqi {
+    font-size: 100px;
+    font-weight: 600;
+    margin-top: 5px;
+    transition: 0.5s;
+}
+
+/* Breathing animation */
+.aqi.animate {
+    animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+/* Status */
+.status {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* Metrics */
+.metrics {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.metric-title {
+    font-size: 12px;
+    color: #777;
+}
+
+.metric-value {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+/* Footer */
+.footer {
+    margin-top: 25px;
+    font-size: 13px;
+    color: #888;
+}
+
+/* Floating particles */
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 12s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bg"></div>
+
+<!-- subtle particles -->
+<div class="particle" style="left:20%"></div>
+<div class="particle" style="left:50%; animation-delay:4s"></div>
+<div class="particle" style="left:75%; animation-delay:8s"></div>
+
+<div class="container">
+
+    <!-- LOGO (replace src with your file path if needed) -->
+    <!-- <img src="logo.png" class="logo"> -->
+    <div style="font-size:18px;">🌿 EARTH CAFÉ</div>
+
+    <div class="aqi animate" id="aqi">73</div>
+    <div class="status" id="status">Excellent Air</div>
+
+    <div class="metrics">
+        <div>
+            <div class="metric-title">CO₂</div>
+            <div class="metric-value" id="co2">1051 ppm</div>
+        </div>
+        <div>
+            <div class="metric-title">Temp</div>
+            <div class="metric-value" id="temp">23°C</div>
+        </div>
+        <div>
+            <div class="metric-title">Humidity</div>
+            <div class="metric-value" id="hum">45%</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Live air quality monitoring
+    </div>
+</div>
+
+<script>
+function updateData() {
+    let aqi = Math.floor(Math.random()*180)+30;
+    let co2 = Math.floor(Math.random()*700)+500;
+    let temp = Math.floor(Math.random()*5)+23;
+    let hum = Math.floor(Math.random()*20)+40;
+
+    document.getElementById("aqi").innerText = aqi;
+    document.getElementById("co2").innerText = co2 + " ppm";
+    document.getElementById("temp").innerText = temp + "°C";
+    document.getElementById("hum").innerText = hum + "%";
+
+    let status = "Excellent Air";
+    let color = "#22c55e";
+    let bg = "";
+
+    if (aqi > 100) {
+        status = "Moderate Air";
+        color = "#eab308";
+        bg = "radial-gradient(circle at 30% 30%, #fef3c7, transparent 50%), radial-gradient(circle at 70% 70%, #fde68a, transparent 50%)";
+    } else {
+        bg = "radial-gradient(circle at 30% 30%, #bbf7d0, transparent 50%), radial-gradient(circle at 70% 70%, #86efac, transparent 50%)";
+    }
+
+    if (aqi > 200) {
+        status = "Poor Air";
+        color = "#ef4444";
+        bg = "radial-gradient(circle at 30% 30%, #fecaca, transparent 50%), radial-gradient(circle at 70% 70%, #fca5a5, transparent 50%)";
+    }
+
+    document.getElementById("status").innerText = status;
+    document.getElementById("aqi").style.color = color;
+    document.getElementById("bg").style.background = bg;
+}
+
+setInterval(updateData, 2500);
+</script>
+
+</body>
+</html>
